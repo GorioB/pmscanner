@@ -20,3 +20,4 @@ class Guitar(scrapy.Item):
 	contact = scrapy.Field()
 	link = scrapy.Field()
 	date_posted = scrapy.Field()
+	status = scrapy.Field()

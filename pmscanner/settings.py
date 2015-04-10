@@ -11,7 +11,11 @@
 BOT_NAME = 'pmscanner'
 
 SPIDER_MODULES = ['pmscanner.spiders']
+ITEM_PIPELINES = {
+	'pmscanner.pipelines.StatusPipeline':500
+}
 NEWSPIDER_MODULE = 'pmscanner.spiders'
-
+FEED_URI = 'output.json'
+FEED_FORMAT = 'jsonlines'
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'pmscanner (+http://www.yourdomain.com)'

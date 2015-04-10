@@ -14,11 +14,13 @@ class GuitarsSpider(Spider):
 		"http://talk.philmusic.com/index.php?board=167.0"
 	]
 
-	def __init__(self,brand='',model='',pages='',forsale='',*args,**kwargs):
+	def __init__(self,brand='',model='',pages='',status='',*args,**kwargs):
 		self.brand = brand
 		self.model = model
 		self.pages = pages
-		self.forsale=forsale
+		self.status=status
+
+
 		self.brandchoices=[]
 		with open("brands.txt","r") as f:
 			for line in f:
@@ -73,8 +75,14 @@ class GuitarsSpider(Spider):
 			if re.search(brand,post,re.IGNORECASE):
 				item['brand']=brand
 
-		if self.forsale:
-			if re.search("(FS|FOR SALE)",post,re.IGNORECASE):
-				yield item
+
+		if re.search("SOLD",post,re.IGNORECASE):
+			item['status']="Sold"
+		elif re.search("(FS|SALE)",post,re.IGNORECASE):
+			item['status']="For Sale"
+		elif re.search("(FT|TRADE)",post,re.IGNORECASE):
+			item['status']="For Trade"
 		else:
-			yield item
+			item['status']='Unknown'
+
+		yield item
