@@ -1,3 +1,5 @@
 .vagrant
 *.exe
 venv
+*.pyc
+*.json
