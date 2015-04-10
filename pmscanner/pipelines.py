@@ -20,3 +20,13 @@ class StatusPipeline(object):
 				return item
 		else:
 			return item
+
+class BrandPipeline(object):
+	def process_item(self,item,spider):
+		if spider.brand:
+			if spider.brand not in item['brand']:
+				raise DropItem("Incorrect brand in %s" % item)
+			else:
+				return item
+		else:
+			return item
