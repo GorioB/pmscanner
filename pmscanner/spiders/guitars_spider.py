@@ -70,10 +70,10 @@ class GuitarsSpider(Spider):
 		postbody = " ".join(response.xpath('//div[@class="post"][1]/div/text()').extract())
 		posthead = keyinfo.xpath('h5/a/text()').extract()[0]
 		post = posthead+postbody
-		item['brand']="Unknown"
+		item['brand']=[]
 		for brand in self.brandchoices:
 			if re.search(brand,post,re.IGNORECASE):
-				item['brand']=brand
+				item['brand'].append(brand)
 
 
 		if re.search("SOLD",post,re.IGNORECASE):
