@@ -3,6 +3,7 @@ import os
 from scrapy.spider import Spider
 from scrapy.http import Request
 from scrapy.contrib.loader import ItemLoader
+from scrapy.contrib.loader.processor import TakeFirst
 import re
 from pmscanner.items import Guitar
 from datetime import datetime,timedelta
@@ -18,13 +19,7 @@ class GuitarsSpider(Spider):
 		self.brand = brand
 		self.model = model
 		self.pages = pages
-		self.status=status
-
-
-		self.brandchoices=[]
-		with open("brands.txt","r") as f:
-			for line in f:
-				self.brandchoices.append(line.strip())
+		self.status = status
 
 		if self.pages:
 			for pagenumber in range(0,int(self.pages)*50,50)[1:]:
@@ -41,48 +36,22 @@ class GuitarsSpider(Spider):
 			)
 
 	def parse_item(self,response):
-		item = Guitar()
-		item['link'] = re.sub(r'PHPSESSID=\w+',
-			"",
-			response.url)
-		keyinfo = response.xpath('//div[@class="keyinfo"][1]')
-		smalltext = keyinfo.xpath('div[@class="smalltext"]')
-		date = smalltext.xpath('text()').extract()[-1].replace(u'\u00bb','').strip()
-		if date.startswith("at"):
-			day = smalltext.xpath('strong[2]/text()').extract()[0]
-			if day=="Today":
-				today = datetime.now()
-			else:
-				today = datetime.now()-timedelta(hours=24)
-			at,time,am = date.split(" ")
-			time = [int(i) for i in time.split(":")]
-			if am=="PM":
-				time[0]+=12
-			today = today.replace(hour=time[0],
-				minute=time[1],
-				second=time[2])
+		loader = ItemLoader(item=Guitar(),response=response)
+		loader.add_value('link',re.sub(r'PHPSESSID=\w+',"",response.url))
 
-			date = today.strftime("%B %d, %Y, %I:%M:%S %p")
+		loader.add_xpath('date_posted',
+			'//div[@class="keyinfo"][1]/div[@class="smalltext"]/strong[2]/text()')
+		loader.add_xpath('date_posted',
+			'//div[@class="keyinfo"][1]/div[@class="smalltext"]/text()')
 
-		item['date_posted'] = date
+		loader.add_xpath('brand',
+			'//div[@class="keyinfo"][1]/h5/a/text()')
+		loader.add_xpath('brand',
+			'//div[@class="post"][1]/div/text()')
 
+		loader.add_xpath('status',
+			'//div[@class="keyinfo"][1]/h5/a/text()')
+		loader.add_xpath('status',
+			'//div[@class="post"][1]/div/text()')
 
-		postbody = " ".join(response.xpath('//div[@class="post"][1]/div/text()').extract())
-		posthead = keyinfo.xpath('h5/a/text()').extract()[0]
-		post = posthead+postbody
-		item['brand']=[]
-		for brand in self.brandchoices:
-			if re.search(brand,post,re.IGNORECASE):
-				item['brand'].append(brand)
-
-
-		if re.search("SOLD",post,re.IGNORECASE):
-			item['status']="Sold"
-		elif re.search("(FS|SALE)",post,re.IGNORECASE):
-			item['status']="For Sale"
-		elif re.search("(FT|TRADE)",post,re.IGNORECASE):
-			item['status']="For Trade"
-		else:
-			item['status']='Unknown'
-
-		yield item
+		yield loader.load_item()
