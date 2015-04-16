@@ -28,7 +28,7 @@ class GetStatus(object):
 	def __call__(self,values):
 		values=' '.join(values)
 		r = []
-		if re.search(u"SOLD",values,re.IGNORECASE):
+		if re.search(u"SOLD|TRADED",values,re.IGNORECASE):
 			r.append("Sold")
 		if re.search(u"(FS|SALE)",values,re.IGNORECASE):
 			r.append("For Sale")
