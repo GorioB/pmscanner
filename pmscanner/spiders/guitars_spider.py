@@ -69,4 +69,7 @@ class GuitarsSpider(Spider):
 			body_xpath,
 			re=r'[63|0][0-9]{10}')
 
+		loader.add_xpath('price',
+			body_xpath,
+			re=r'[0-9]*\.?[0-9][k|K]')
 		yield loader.load_item()
