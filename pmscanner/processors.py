@@ -30,10 +30,10 @@ class GetStatus(object):
 		r = []
 		if re.search(u"SOLD",values,re.IGNORECASE):
 			r.append("Sold")
-		elif re.search(u"(FS|SALE)",values,re.IGNORECASE):
+		if re.search(u"(FS|SALE)",values,re.IGNORECASE):
 			r.append("For Sale")
-		elif re.search(u"(FT|TRADE)",values,re.IGNORECASE):
+		if re.search(u"(FT|TRADE)",values,re.IGNORECASE):
 			r.append("For Trade")
-		else:
+		if not r:
 			r.append("Unknown")
 		return r
