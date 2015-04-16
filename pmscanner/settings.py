@@ -14,6 +14,7 @@ SPIDER_MODULES = ['pmscanner.spiders']
 ITEM_PIPELINES = {
 	'pmscanner.pipelines.StatusPipeline':500,
 	'pmscanner.pipelines.BrandPipeline':600,
+	'pmscanner.pipelines.ModelPipeline':400,
 }
 NEWSPIDER_MODULE = 'pmscanner.spiders'
 FEED_URI = 'output.json'

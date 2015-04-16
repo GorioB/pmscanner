@@ -9,18 +9,15 @@ class GetDate(object):
 		dateobj = ddp.get_date_data(values)['date_obj']
 		return dateobj.strftime("%B %d, %Y, %H:%M:%S")
 
-class GetBrand(object):
+class SearchFromList(object):
 	def __init__(self,choices):
-		self.choices=[]
-		with open(choices,"r") as f:
-			for line in f:
-				self.choices.append(line.strip())
+		self.choices=choices
 
 	def __call__(self,values):
 		brands =[]
 		values = ' '.join(values)
 		for choice in self.choices:
-			if re.search(choice,values,re.IGNORECASE):
+			if re.search(self.choices[choice],values,re.IGNORECASE):
 				brands.append(choice)
 
 		if not brands:
@@ -30,11 +27,13 @@ class GetBrand(object):
 class GetStatus(object):
 	def __call__(self,values):
 		values=' '.join(values)
+		r = []
 		if re.search(u"SOLD",values,re.IGNORECASE):
-			return "Sold"
+			r.append("Sold")
 		elif re.search(u"(FS|SALE)",values,re.IGNORECASE):
-			return "For Sale"
+			r.append("For Sale")
 		elif re.search(u"(FT|TRADE)",values,re.IGNORECASE):
-			return "For Trade"
+			r.append("For Trade")
 		else:
-			return "Unknown"
+			r.append("Unknown")
+		return r

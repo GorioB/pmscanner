@@ -49,6 +49,11 @@ class GuitarsSpider(Spider):
 		loader.add_xpath('brand',
 			'//div[@class="post"][1]/div/text()')
 
+		loader.add_xpath('model',
+			'//div[@class="keyinfo"][1]/h5/a/text()')
+		loader.add_xpath('model',
+			'//div[@class="post"][1]/div/text()')
+
 		loader.add_xpath('status',
 			'//div[@class="keyinfo"][1]/h5/a/text()')
 		loader.add_xpath('status',

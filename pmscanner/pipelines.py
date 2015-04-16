@@ -11,22 +11,25 @@ class PmscannerPipeline(object):
     def process_item(self, item, spider):
         return item
 
-class StatusPipeline(object):
-	def process_item(self,item,spider):
-		if spider.status:
-			if item['status'] not in (spider.status,"Unknown"):
-				raise DropItem("Incorrect status in %s" % item)
-			else:
-				return item
-		else:
-			return item
+class FilterPipeline(object):
+	def __init__(self):
+		self.field = ""
 
-class BrandPipeline(object):
 	def process_item(self,item,spider):
-		if spider.brand:
-			if spider.brand not in item['brand']:
-				raise DropItem("Incorrect brand in %s" % item)
-			else:
-				return item
-		else:
-			return item
+		if spider.__dict__[self.field]:
+			print item[self.field],spider.__dict__[self.field]
+			if spider.__dict__[self.field] not in item[self.field]:
+				raise DropItem("Incorrect %s in %s." % (self.field,item))
+		return item
+
+class StatusPipeline(FilterPipeline):
+	def __init__(self):
+		self.field="status"
+
+class BrandPipeline(FilterPipeline):
+	def __init__(self):
+		self.field="brand"
+
+class ModelPipeline(FilterPipeline):
+	def __init__(self):
+		self.field="model"
