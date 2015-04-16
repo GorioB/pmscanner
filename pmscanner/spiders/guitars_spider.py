@@ -44,19 +44,29 @@ class GuitarsSpider(Spider):
 		loader.add_xpath('date_posted',
 			'//div[@class="keyinfo"][1]/div[@class="smalltext"]/text()')
 
+		header_xpath = '//div[@class="keyinfo"][1]/h5/a/text()'
+		body_xpath = '//div[@class="post"][1]/div/text()'
+
 		loader.add_xpath('brand',
-			'//div[@class="keyinfo"][1]/h5/a/text()')
+			header_xpath)
 		loader.add_xpath('brand',
-			'//div[@class="post"][1]/div/text()')
+			body_xpath)
 
 		loader.add_xpath('model',
-			'//div[@class="keyinfo"][1]/h5/a/text()')
+			header_xpath)
 		loader.add_xpath('model',
-			'//div[@class="post"][1]/div/text()')
+			body_xpath)
 
 		loader.add_xpath('status',
-			'//div[@class="keyinfo"][1]/h5/a/text()')
+			header_xpath)
 		loader.add_xpath('status',
-			'//div[@class="post"][1]/div/text()')
+			body_xpath)
+
+		# loader.add_xpath('contact',
+		# 	header_xpath,
+		# 	re=r'(0|63)[0-9]{10}')
+		loader.add_xpath('contact',
+			body_xpath,
+			re=r'[63|0][0-9]{10}')
 
 		yield loader.load_item()
