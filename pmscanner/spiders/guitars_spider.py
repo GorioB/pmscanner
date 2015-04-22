@@ -72,4 +72,8 @@ class GuitarsSpider(Spider):
 		loader.add_xpath('price',
 			body_xpath,
 			re=r'[0-9]*\.?[0-9][k|K]')
+
+		loader.add_xpath('image_urls',
+			'//div[@class="post"][1]/div/img/@src')
+
 		yield loader.load_item()

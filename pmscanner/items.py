@@ -19,3 +19,5 @@ class Guitar(scrapy.Item):
 	link = scrapy.Field(output_processor=TakeFirst())
 	date_posted = scrapy.Field(output_processor=GetDate())
 	status = scrapy.Field(output_processor=GetStatus())
+	image_urls = scrapy.Field()
+	images = scrapy.Field()

@@ -7,15 +7,20 @@
 #
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #
-
+import os
 BOT_NAME = 'pmscanner'
-
+PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
 SPIDER_MODULES = ['pmscanner.spiders']
 ITEM_PIPELINES = {
 	'pmscanner.pipelines.StatusPipeline':500,
 	'pmscanner.pipelines.BrandPipeline':600,
 	'pmscanner.pipelines.ModelPipeline':400,
-}
+	'scrapy.contrib.pipeline.images.ImagesPipeline':1}
+
+IMAGES_STORE = os.path.join(PROJECT_ROOT,"images")
+
+IMAGES_MIN_HEIGHT = 100
+IMAGES_MIN_WIDTH = 100
 NEWSPIDER_MODULE = 'pmscanner.spiders'
 FEED_URI = 'output.json'
 FEED_FORMAT = 'jsonlines'
