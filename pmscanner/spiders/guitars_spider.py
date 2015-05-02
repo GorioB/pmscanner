@@ -1,12 +1,15 @@
 import scrapy
 import os
+from scrapy import signals
 from scrapy.spider import Spider
 from scrapy.http import Request
 from scrapy.contrib.loader import ItemLoader
 from scrapy.contrib.loader.processor import TakeFirst
+from scrapy.xlib.pydispatch import dispatcher
 import re
 from pmscanner.items import Guitar
 from datetime import datetime,timedelta
+from generate_html import generate_html
 
 class GuitarsSpider(Spider):
 	name = 'guitars'
@@ -16,6 +19,7 @@ class GuitarsSpider(Spider):
 	]
 
 	def __init__(self,brand='',model='',pages='',status='',*args,**kwargs):
+		dispatcher.connect(self.quit,signals.spider_closed)
 		self.brand = brand
 		self.model = model
 		self.pages = pages
@@ -77,3 +81,6 @@ class GuitarsSpider(Spider):
 			'//div[@class="post"][1]/div/img/@src')
 
 		yield loader.load_item()
+
+	def quit(self,spider):
+		generate_html()

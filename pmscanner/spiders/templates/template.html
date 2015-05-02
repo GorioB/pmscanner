@@ -1,0 +1,23 @@
+<html>
+<h1> PMScanner </h1>
+{% if data %}
+<h2>{{ data|length }} items.</h2>
+    <ul>
+    {% for item in data %}
+        <li>
+            <a href="{{ item.link }}">
+                {{ item.status }}: {{ item.brand }} - {{ item.model }}</a>
+            {% if item.images %}
+                <ul>
+                    <li>
+                        {% for image in item.images %}
+                            <a href="pmscanner/images/{{ image.path }}"><img src="pmscanner/images/{{ image.path }}" style="width: 100px; height: 100px;"></a>
+                        {% endfor %}
+                    </li>
+                </ul>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+{% endif %}
+</html>
