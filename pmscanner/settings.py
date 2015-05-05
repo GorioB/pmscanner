@@ -21,6 +21,9 @@ IMAGES_STORE = os.path.join(PROJECT_ROOT,"images")
 
 IMAGES_MIN_HEIGHT = 100
 IMAGES_MIN_WIDTH = 100
+IMAGES_THUMBS = {
+	'small':(100,100)
+}
 NEWSPIDER_MODULE = 'pmscanner.spiders'
 FEED_URI = 'output.json'
 FEED_FORMAT = 'jsonlines'
