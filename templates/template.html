@@ -6,7 +6,7 @@
     {% for item in data %}
         <li>
             <a href="{{ item.link }}">
-                {{ item.status }}: {{ item.brand }} - {{ item.model }}</a>
+                {{ item.status }}: {{ item.brand }} - {{ item.model }} ({{ item.price }})</a>
             {% if item.images %}
                 <ul>
                     <li>
