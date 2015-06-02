@@ -15,6 +15,7 @@ ITEM_PIPELINES = {
 	'pmscanner.pipelines.StatusPipeline':500,
 	'pmscanner.pipelines.BrandPipeline':600,
 	'pmscanner.pipelines.ModelPipeline':400,
+	'pmscanner.pipelines.ThumbsPipeline':2,
 	'scrapy.contrib.pipeline.images.ImagesPipeline':1}
 
 IMAGES_STORE = os.path.join(PROJECT_ROOT,"images")

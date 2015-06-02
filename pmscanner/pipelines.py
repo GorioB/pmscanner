@@ -6,6 +6,7 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 from scrapy.exceptions import DropItem
+import os
 
 class PmscannerPipeline(object):
     def process_item(self, item, spider):
@@ -20,6 +21,13 @@ class FilterPipeline(object):
 			print item[self.field],spider.__dict__[self.field]
 			if spider.__dict__[self.field] not in item[self.field]:
 				raise DropItem("Incorrect %s in %s." % (self.field,item))
+		return item
+
+class ThumbsPipeline(object):
+	def process_item(self,item,spider):
+		for image in item['images']:
+			if 'path' in image:
+				image['thumb']='/'.join(["thumbs","small",os.path.split(image['path'])[1]])
 		return item
 
 class StatusPipeline(FilterPipeline):
